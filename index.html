@@ -4,597 +4,1031 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discord テキスト装飾ガイド</title>
+    <meta name="description" content="Discordの太字・斜体・下線・ネタバレ・見出しなどの書き方をまとめたガイド。文字を入力して装飾を選ぶと、貼りつける文章をコピーできます。">
+    <meta name="theme-color" content="#FEE75C">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+1+Code:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>document.documentElement.classList.add('js');</script>
     <style>
+        :root {
+            --yellow: #FEE75C;
+            --ink: #1E1F22;
+            --blurple: #5865F2;
+            --blurple-deep: #3F49B8;
+            --green: #248046;
+            --surface: #313338;
+            --surface-side: #2B2D31;
+            --surface-deep: #1E1F22;
+            --line: #3F4147;
+            --text: #DBDEE1;
+            --text-strong: #F2F3F5;
+            --text-muted: #B5BAC1;
+            --font-display: 'Dela Gothic One', 'Hiragino Sans', sans-serif;
+            --font-body: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Yu Gothic UI', sans-serif;
+            --font-mono: 'M PLUS 1 Code', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', 'Hiragino Sans', 'Yu Gothic UI', sans-serif;
-            background: linear-gradient(135deg, #5865F2 0%, #3E4A8D 100%);
-            min-height: 100vh;
-            padding: 20px;
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
         }
 
-        .container {
-            max-width: 1000px;
+        body {
+            font-family: var(--font-body);
+            font-weight: 500;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--surface);
+        }
+
+        button,
+        input {
+            font: inherit;
+            color: inherit;
+        }
+
+        button {
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--yellow);
+            outline-offset: 2px;
+        }
+
+        /* 書く記号はどこでも同じ色。Discord面では黄、黄色の面では青 */
+        .m {
+            color: var(--yellow);
+            font-weight: 700;
+        }
+
+        /* ---------- ヒーロー（黄色の面） ---------- */
+        .hero {
+            background: var(--yellow);
+            color: var(--ink);
+            padding: 28px clamp(16px, 4vw, 56px) clamp(32px, 5vw, 64px);
+        }
+
+        .hero-inner {
+            max-width: 1320px;
             margin: 0 auto;
         }
 
-        header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-        }
-
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 1rem;
+            font-weight: 700;
         }
 
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
-
-        .section-title {
-            color: #5865F2;
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #E3E5E8;
-        }
-
-        .format-item {
+        .hero-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr 1.5fr;
-            gap: 15px;
-            padding: 15px;
-            margin-bottom: 10px;
-            background: #F6F6F7;
-            border-radius: 8px;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 580px);
+            gap: clamp(24px, 4vw, 64px);
             align-items: center;
+            margin-top: clamp(24px, 3.5vw, 44px);
         }
 
-        .format-name {
-            font-weight: 600;
-            color: #2C2F33;
+        .thesis {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6.2vw, 5.75rem);
+            line-height: 1.22;
+            letter-spacing: 0;
         }
 
-        .format-syntax {
-            font-family: 'Courier New', monospace;
-            background: #2C2F33;
-            color: #FFFFFF;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background 0.2s;
+        .thesis-line {
+            display: block;
         }
 
-        .format-syntax:hover {
-            background: #23272A;
-        }
-
-        .format-example {
-            font-style: italic;
-            color: #4F545C;
-            padding-left: 10px;
-            border-left: 3px solid #5865F2;
-        }
-
-        .copy-btn {
-            background: #5865F2;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: background 0.2s;
-        }
-
-        .copy-btn:hover {
-            background: #4752C4;
-        }
-
-        .copy-btn:active {
-            transform: scale(0.95);
-        }
-
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            background-color: #23272A;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 10px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.85rem;
+        .clap {
             white-space: nowrap;
         }
 
-        .tooltip .tooltiptext.show {
-            visibility: visible;
-            opacity: 1;
+        .clap-m {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.72em;
+            color: var(--blurple-deep);
+            vertical-align: 0.12em;
+        }
+
+        .js .clap-m {
+            transition: transform 0.28s cubic-bezier(0.3, 1.9, 0.6, 1), opacity 0.16s linear;
+        }
+
+        .js .clap:not(.is-closed) .clap-m {
+            opacity: 0;
+        }
+
+        .js .clap:not(.is-closed) .clap-m:first-child {
+            transform: translateX(-0.9em);
+        }
+
+        .js .clap:not(.is-closed) .clap-m:last-child {
+            transform: translateX(0.9em);
+        }
+
+        .js .clap:not(.is-closed) .clap-word {
+            font-family: var(--font-body);
+            font-weight: 400;
+        }
+
+        .lead {
+            margin-top: 20px;
+            font-size: 1.125rem;
+            font-weight: 700;
+            max-width: 26em;
+        }
+
+        /* ---------- 装飾ツール（Discordの窓） ---------- */
+        .tool {
+            background: var(--surface);
+            color: var(--text);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 24px 48px -24px rgba(30, 31, 34, 0.55);
+        }
+
+        .tool-bar {
+            padding: 11px 18px;
+            border-bottom: 1px solid var(--surface-deep);
+            color: var(--text-strong);
+            font-weight: 700;
+        }
+
+        .hash {
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-right: 0.35em;
+        }
+
+        .tool-body {
+            padding: 16px 18px 18px;
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 11px 14px;
+            border: none;
+            border-radius: 8px;
+            background: #383A40;
+            color: var(--text-strong);
+            font-size: 1rem;
+        }
+
+        .text-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .chips {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .chip {
+            min-height: 42px;
+            padding: 4px 6px;
+            border-radius: 6px;
+            background: #3F4147;
+            color: var(--text-strong);
+            font-size: 0.875rem;
+            line-height: 1.3;
+            transition: background 0.12s;
+        }
+
+        .chip:hover {
+            background: #4E5058;
+        }
+
+        .chip[aria-pressed="true"] {
+            background: var(--blurple);
+            color: #FFFFFF;
+        }
+
+        .chip code {
+            font-family: var(--font-mono);
+            background: var(--surface-deep);
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        .chip-spoiler {
+            background: var(--surface-deep);
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        .chip-quote {
+            border-left: 3px solid currentColor;
+            padding-left: 6px;
+        }
+
+        .chip-h1 { font-size: 1rem; font-weight: 700; }
+        .chip-h2 { font-size: 0.9375rem; font-weight: 700; }
+        .chip-h3 { font-size: 0.875rem; font-weight: 700; }
+
+        .message {
+            display: grid;
+            grid-template-columns: 40px minmax(0, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid var(--line);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--blurple);
+            color: #FFFFFF;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            display: grid;
+            place-items: center;
+            font-size: 1rem;
+        }
+
+        .message-head {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        .message-head b {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-strong);
+            margin-right: 0.4em;
+        }
+
+        .message-body {
+            min-height: 2.4em;
+            overflow-wrap: anywhere;
+            color: var(--text);
+        }
+
+        .message-empty {
+            color: var(--text-muted);
+        }
+
+        .output {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 10px;
+            align-items: end;
+            margin-top: 14px;
+        }
+
+        .output-text {
+            min-height: 44px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: var(--surface-deep);
+            color: var(--text-strong);
+            font-family: var(--font-mono);
+            font-size: 0.9375rem;
+            overflow-wrap: anywhere;
+        }
+
+        .copy-btn {
+            min-height: 44px;
+            padding: 0 18px;
+            border-radius: 8px;
+            background: var(--green);
+            color: #FFFFFF;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: background 0.12s;
+        }
+
+        .copy-btn:hover {
+            background: #1A6334;
+        }
+
+        .copy-btn:disabled {
+            background: #4E5058;
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .status:empty {
+            display: none;
+        }
+
+        .status {
+            margin-top: 6px;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        /* ---------- Discordでの表示 ---------- */
+        .render {
+            overflow-wrap: anywhere;
+            min-width: 0;
+        }
+
+        .render strong,
+        .message-body strong {
+            font-weight: 700;
+            color: var(--text-strong);
+        }
+
+        .render code,
+        .message-body code {
+            font-family: var(--font-mono);
+            font-size: 0.875em;
+            background: var(--surface-side);
+            border: 1px solid var(--surface-deep);
+            border-radius: 4px;
+            padding: 1px 4px;
+        }
+
+        .render blockquote,
+        .message-body blockquote {
+            border-left: 4px solid #4E5058;
+            padding-left: 12px;
+        }
+
+        .render pre {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            background: var(--surface-side);
+            border: 1px solid var(--surface-deep);
+            border-radius: 4px;
+            padding: 8px 10px;
+            white-space: pre-wrap;
+        }
+
+        .render ul,
+        .render ol {
+            padding-left: 1.4em;
+        }
+
+        .d-h1,
+        .d-h2,
+        .d-h3 {
+            font-weight: 700;
+            color: var(--text-strong);
+            line-height: 1.35;
+        }
+
+        .d-h1 { font-size: 1.5rem; }
+        .d-h2 { font-size: 1.25rem; }
+        .d-h3 { font-size: 1rem; }
+
+        .spoiler {
+            display: inline;
+            padding: 0 3px;
+            border-radius: 3px;
+            background: var(--surface-deep);
+            color: transparent;
+            transition: background 0.1s;
+        }
+
+        .spoiler:hover {
+            background: #111214;
+        }
+
+        .spoiler[aria-expanded="true"] {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+        }
+
+        .k { color: #FF9D9D; }
+        .s { color: #8FD6A6; }
+        .f { color: #A9B4FF; }
+
+        /* ---------- 早見表（Discordの画面） ---------- */
+        .app {
+            display: grid;
+            grid-template-columns: 232px minmax(0, 1fr);
+            background: var(--surface);
+        }
+
+        .side {
+            background: var(--surface-side);
+        }
+
+        .side-inner {
+            position: sticky;
+            top: 0;
+            padding: 24px 10px;
+        }
+
+        .side-title {
+            padding: 0 10px 8px;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .side a {
+            display: block;
+            padding: 6px 10px;
+            margin-bottom: 2px;
+            border-radius: 5px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .side a:hover {
+            background: #35373C;
+            color: var(--text);
+        }
+
+        .side a.is-current {
+            background: #404249;
+            color: #FFFFFF;
+        }
+
+        .main {
+            padding: clamp(24px, 3vw, 40px) clamp(16px, 4vw, 56px) 32px;
+            min-width: 0;
+        }
+
+        .sheet {
+            max-width: 980px;
+            scroll-margin-top: 24px;
+        }
+
+        .sheet + .sheet {
+            margin-top: 48px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-strong);
+            margin-bottom: 4px;
+        }
+
+        .row,
+        .row-head {
+            display: grid;
+            grid-template-columns: 11.5rem minmax(0, 1fr) minmax(0, 1fr);
+            gap: 16px;
+            align-items: center;
+        }
+
+        .row-head {
+            padding: 6px 0;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .row {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .row-name {
+            font-weight: 700;
+            color: var(--text-strong);
+        }
+
+        .syntax {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            min-height: 44px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: var(--surface-deep);
+            color: var(--text-strong);
+            text-align: left;
+            transition: background 0.12s;
+        }
+
+        .syntax:hover {
+            background: #111214;
+        }
+
+        .syntax code {
+            font-family: var(--font-mono);
+            font-size: 0.9375rem;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            min-width: 0;
+        }
+
+        .syntax-copy {
+            flex: none;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .syntax.is-copied .syntax-copy {
+            color: #7EE2A0;
         }
 
         .tips {
-            background: #FFF3CD;
-            border-left: 4px solid #FFC107;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
-        }
-
-        .tips-title {
-            font-weight: 600;
-            color: #856404;
-            margin-bottom: 8px;
-        }
-
-        .tips ul {
-            margin-left: 20px;
-            color: #856404;
+            list-style: none;
+            margin-top: 12px;
         }
 
         .tips li {
-            margin-bottom: 5px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--line);
         }
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
+        .tips code {
+            font-family: var(--font-mono);
+            font-size: 0.875em;
+            background: var(--surface-side);
+            border: 1px solid var(--surface-deep);
+            border-radius: 4px;
+            padding: 1px 4px;
+        }
+
+        .foot {
+            margin-top: 32px;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 960px) {
+            .hero-grid {
+                grid-template-columns: minmax(0, 1fr);
             }
 
-            .format-item {
-                grid-template-columns: 1fr;
-                gap: 10px;
+            .thesis {
+                font-size: clamp(2.5rem, 11vw, 4.5rem);
             }
 
-            .format-syntax {
-                font-size: 0.85rem;
+            .app {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .side {
+                position: sticky;
+                top: 0;
+                z-index: 2;
+                border-bottom: 1px solid var(--surface-deep);
+            }
+
+            .side-inner {
+                position: static;
+                display: flex;
+                gap: 2px;
+                padding: 8px 10px;
+                overflow-x: auto;
+            }
+
+            .side-title {
+                display: none;
+            }
+
+            .side a {
+                margin-bottom: 0;
+                flex: none;
+            }
+
+            .sheet {
+                scroll-margin-top: 64px;
             }
         }
 
-        .discord-color {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.85rem;
-            margin-right: 5px;
+        @media (max-width: 640px) {
+            .chips {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .output {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .copy-btn {
+                width: 100%;
+            }
+
+            .row-head {
+                display: none;
+            }
+
+            .row {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 8px;
+                padding: 14px 0;
+            }
         }
 
-        .code-block-examples {
-            margin-top: 15px;
-        }
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
 
-        .code-example {
-            background: #2C2F33;
-            color: #FFFFFF;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-        }
-
-        .example-label {
-            color: #99AAB5;
-            font-size: 0.85rem;
-            margin-bottom: 5px;
-        }
-
-        .format-btn {
-            background: white;
-            border: 2px solid #5865F2;
-            color: #5865F2;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-
-        .format-btn:hover {
-            background: #5865F2;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(88, 101, 242, 0.3);
-        }
-
-        .format-btn:active {
-            transform: translateY(0);
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📝 Discord テキスト装飾ガイド</h1>
-            <p class="subtitle">初心者でも簡単！コピペですぐ使える</p>
-        </header>
+    <section class="hero">
+        <div class="hero-inner">
+            <h1>Discord テキスト装飾ガイド</h1>
 
-        <!-- インタラクティブ装飾ツール -->
-        <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-            <h2 class="section-title" style="color: white; border-bottom-color: rgba(255,255,255,0.3);">🎯 装飾プレビューツール</h2>
-            
-            <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">
-                <label for="userInput" style="display: block; font-weight: 600; margin-bottom: 10px; color: #2C2F33;">
-                    装飾したいテキストを入力：
-                </label>
-                <input 
-                    type="text" 
-                    id="userInput" 
-                    placeholder="例：こんにちは" 
-                    style="width: 100%; padding: 12px; border: 2px solid #E3E5E8; border-radius: 6px; font-size: 1rem; margin-bottom: 20px;"
-                >
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 15px;">
-                    <button class="format-btn" onclick="applyFormat('**', '**')">
-                        <strong>太字</strong>
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('*', '*')">
-                        <em>斜体</em>
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('__', '__')">
-                        <u>下線</u>
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('~~', '~~')">
-                        <s>取り消し線</s>
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('***', '***')">
-                        <strong><em>太字斜体</em></strong>
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('__**', '**__')">
-                        <u><strong>太字下線</strong></u>
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('`', '`')">
-                        <code>コード</code>
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('||', '||')">
-                        ネタバレ
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('> ', '')">
-                        引用
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('# ', '')">
-                        見出し1
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('## ', '')">
-                        見出し2
-                    </button>
-                    <button class="format-btn" onclick="applyFormat('### ', '')">
-                        見出し3
-                    </button>
+            <div class="hero-grid">
+                <div>
+                    <p class="thesis">
+                        <span class="thesis-line"><span class="clap" id="clap"><span class="clap-m" aria-hidden="true">**</span><span class="clap-word">はさむ</span><span class="clap-m" aria-hidden="true">**</span></span></span>
+                        <span class="thesis-line">だけで、</span>
+                        <span class="thesis-line">文字が変わる。</span>
+                    </p>
+                    <p class="lead">文字を入力して装飾を選ぶと、<br>Discordに貼る文章ができます。</p>
                 </div>
 
-                <div id="previewArea" style="margin-top: 25px; display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <label style="font-weight: 600; color: #2C2F33;">装飾されたテキスト：</label>
-                        <button class="copy-btn" onclick="copyPreview(event)" style="padding: 8px 16px;">
-                            📋 コピー
-                        </button>
+                <!-- インタラクティブ装飾ツール -->
+                <div class="tool">
+                    <div class="tool-bar"><span class="hash">#</span>装飾の練習</div>
+                    <div class="tool-body">
+                        <label class="label" for="userInput">装飾したい文字</label>
+                        <input class="text-input" type="text" id="userInput" value="こんにちは" placeholder="例：こんにちは" autocomplete="off">
+
+                        <div class="chips" role="group" aria-label="装飾の種類">
+                            <button type="button" class="chip" data-format="bold" data-prefix="**" data-suffix="**" aria-pressed="true"><strong>太字</strong></button>
+                            <button type="button" class="chip" data-format="italic" data-prefix="*" data-suffix="*" aria-pressed="false"><em>斜体</em></button>
+                            <button type="button" class="chip" data-format="underline" data-prefix="__" data-suffix="__" aria-pressed="false"><u>下線</u></button>
+                            <button type="button" class="chip" data-format="strike" data-prefix="~~" data-suffix="~~" aria-pressed="false"><s>取り消し線</s></button>
+                            <button type="button" class="chip" data-format="boldItalic" data-prefix="***" data-suffix="***" aria-pressed="false"><strong><em>太字斜体</em></strong></button>
+                            <button type="button" class="chip" data-format="boldUnderline" data-prefix="__**" data-suffix="**__" aria-pressed="false"><u><strong>太字下線</strong></u></button>
+                            <button type="button" class="chip" data-format="code" data-prefix="`" data-suffix="`" aria-pressed="false"><code>コード</code></button>
+                            <button type="button" class="chip" data-format="spoiler" data-prefix="||" data-suffix="||" aria-pressed="false"><span class="chip-spoiler">ネタバレ</span></button>
+                            <button type="button" class="chip" data-format="quote" data-prefix="&gt; " data-suffix="" aria-pressed="false"><span class="chip-quote">引用</span></button>
+                            <button type="button" class="chip chip-h1" data-format="h1" data-prefix="# " data-suffix="" aria-pressed="false">見出し1</button>
+                            <button type="button" class="chip chip-h2" data-format="h2" data-prefix="## " data-suffix="" aria-pressed="false">見出し2</button>
+                            <button type="button" class="chip chip-h3" data-format="h3" data-prefix="### " data-suffix="" aria-pressed="false">見出し3</button>
+                        </div>
+
+                        <div class="message">
+                            <div class="avatar" aria-hidden="true">**</div>
+                            <div>
+                                <p class="message-head"><b>あなた</b>Discordでの見え方</p>
+                                <div class="message-body" id="preview"></div>
+                            </div>
+                        </div>
+
+                        <div class="output">
+                            <div>
+                                <span class="label">Discordに貼る文章</span>
+                                <div class="output-text" id="outputText"></div>
+                            </div>
+                            <button type="button" class="copy-btn" id="copyBtn">コピーする</button>
+                        </div>
+                        <p class="status" id="status" role="status"></p>
                     </div>
-                    <div id="preview" style="background: #2C2F33; color: #FFFFFF; padding: 15px; border-radius: 6px; font-family: 'Courier New', monospace; word-break: break-all; min-height: 50px;"></div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- 基本的な装飾 -->
-        <div class="card">
-            <h2 class="section-title">✨ 基本的な装飾</h2>
-            
-            <div class="format-item">
-                <div class="format-name">太字</div>
-                <div class="format-syntax tooltip" onclick="copyText('**太字**', this)">
-                    **太字**
-                    <span class="tooltiptext">クリックでコピー</span>
-                </div>
-                <div class="format-example"><strong>太字</strong> のように表示されます</div>
+    <div class="app">
+        <nav class="side" aria-label="早見表の目次">
+            <div class="side-inner">
+                <p class="side-title">早見表</p>
+                <a href="#basic"><span class="hash">#</span>基本の装飾</a>
+                <a href="#code"><span class="hash">#</span>コード</a>
+                <a href="#quote"><span class="hash">#</span>引用</a>
+                <a href="#heading"><span class="hash">#</span>見出しとリスト</a>
+                <a href="#tips"><span class="hash">#</span>知っておくと便利</a>
             </div>
+        </nav>
 
-            <div class="format-item">
-                <div class="format-name">斜体</div>
-                <div class="format-syntax tooltip" onclick="copyText('*斜体*', this)">
-                    *斜体*
-                    <span class="tooltiptext">クリックでコピー</span>
+        <main class="main">
+            <!-- 基本の装飾 -->
+            <section class="sheet" id="basic">
+                <h2>基本の装飾</h2>
+                <div class="row-head"><span>装飾</span><span>書き方（押すとコピー）</span><span>Discordでの表示</span></div>
+
+                <div class="row">
+                    <p class="row-name">太字</p>
+                    <button type="button" class="syntax" data-copy="**太字**"><code><span class="m">**</span>太字<span class="m">**</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><strong>太字</strong></div>
                 </div>
-                <div class="format-example"><em>斜体</em> のように表示されます</div>
-            </div>
-
-            <div class="format-item">
-                <div class="format-name">下線</div>
-                <div class="format-syntax tooltip" onclick="copyText('__下線__', this)">
-                    __下線__
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">斜体</p>
+                    <button type="button" class="syntax" data-copy="*斜体*"><code><span class="m">*</span>斜体<span class="m">*</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><em>斜体</em></div>
                 </div>
-                <div class="format-example"><u>下線</u> のように表示されます</div>
-            </div>
-
-            <div class="format-item">
-                <div class="format-name">取り消し線</div>
-                <div class="format-syntax tooltip" onclick="copyText('~~取り消し~~', this)">
-                    ~~取り消し~~
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">下線</p>
+                    <button type="button" class="syntax" data-copy="__下線__"><code><span class="m">__</span>下線<span class="m">__</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><u>下線</u></div>
                 </div>
-                <div class="format-example"><s>取り消し</s> のように表示されます</div>
-            </div>
-
-            <div class="format-item">
-                <div class="format-name">太字＋斜体</div>
-                <div class="format-syntax tooltip" onclick="copyText('***太字斜体***', this)">
-                    ***太字斜体***
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">取り消し線</p>
+                    <button type="button" class="syntax" data-copy="~~取り消し~~"><code><span class="m">~~</span>取り消し<span class="m">~~</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><s>取り消し</s></div>
                 </div>
-                <div class="format-example"><strong><em>太字斜体</em></strong> のように表示されます</div>
-            </div>
-
-            <div class="format-item">
-                <div class="format-name">太字＋下線</div>
-                <div class="format-syntax tooltip" onclick="copyText('__**太字下線**__', this)">
-                    __**太字下線**__
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">太字＋斜体</p>
+                    <button type="button" class="syntax" data-copy="***太字斜体***"><code><span class="m">***</span>太字斜体<span class="m">***</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><strong><em>太字斜体</em></strong></div>
                 </div>
-                <div class="format-example"><u><strong>太字下線</strong></u> のように表示されます</div>
-            </div>
-        </div>
-
-        <!-- コードブロック -->
-        <div class="card">
-            <h2 class="section-title">💻 コード表示</h2>
-            
-            <div class="format-item">
-                <div class="format-name">インラインコード</div>
-                <div class="format-syntax tooltip" onclick="copyText('`コード`', this)">
-                    `コード`
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">太字＋下線</p>
+                    <button type="button" class="syntax" data-copy="__**太字下線**__"><code><span class="m">__**</span>太字下線<span class="m">**__</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><u><strong>太字下線</strong></u></div>
                 </div>
-                <div class="format-example"><code>コード</code> のように表示されます</div>
-            </div>
-
-            <div class="code-block-examples">
-                <div class="example-label">複数行のコードブロック：</div>
-                <div class="code-example tooltip" onclick="copyText('```\nコード1行目\nコード2行目\n```', this)">
-```<br>コード1行目<br>コード2行目<br>```
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">ネタバレ</p>
+                    <button type="button" class="syntax" data-copy="||ネタバレ||"><code><span class="m">||</span>ネタバレ<span class="m">||</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><button type="button" class="spoiler" aria-expanded="false">ネタバレ</button></div>
                 </div>
+            </section>
 
-                <div class="example-label">シンタックスハイライト付き（JavaScript）：</div>
-                <div class="code-example tooltip" onclick="copyText('```js\nconst greeting = \"Hello!\";\nconsole.log(greeting);\n```', this)">
-```js<br>const greeting = "Hello!";<br>console.log(greeting);<br>```
-                    <span class="tooltiptext">クリックでコピー</span>
+            <!-- コード -->
+            <section class="sheet" id="code">
+                <h2>コード</h2>
+                <div class="row-head"><span>装飾</span><span>書き方（押すとコピー）</span><span>Discordでの表示</span></div>
+
+                <div class="row">
+                    <p class="row-name">インラインコード</p>
+                    <button type="button" class="syntax" data-copy="`コード`"><code><span class="m">`</span>コード<span class="m">`</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><code>コード</code></div>
                 </div>
-
-                <div class="example-label">シンタックスハイライト付き（Python）：</div>
-                <div class="code-example tooltip" onclick="copyText('```python\ndef hello():\n    print(\"Hello!\")\n```', this)">
-```python<br>def hello():<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Hello!")<br>```
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">複数行のコードブロック</p>
+                    <button type="button" class="syntax" data-copy="```&#10;コード1行目&#10;コード2行目&#10;```"><code><span class="m">```</span>
+コード1行目
+コード2行目
+<span class="m">```</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><pre>コード1行目
+コード2行目</pre></div>
                 </div>
-            </div>
-        </div>
-
-        <!-- 引用と区切り -->
-        <div class="card">
-            <h2 class="section-title">📌 引用と区切り</h2>
-            
-            <div class="format-item">
-                <div class="format-name">引用（1行）</div>
-                <div class="format-syntax tooltip" onclick="copyText('> 引用文', this)">
-                    &gt; 引用文
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">色付き（JavaScript）</p>
+                    <button type="button" class="syntax" data-copy="```js&#10;const greeting = &quot;Hello!&quot;;&#10;console.log(greeting);&#10;```"><code><span class="m">```js</span>
+const greeting = "Hello!";
+console.log(greeting);
+<span class="m">```</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><pre><span class="k">const</span> greeting = <span class="s">"Hello!"</span>;
+console.<span class="f">log</span>(greeting);</pre></div>
                 </div>
-                <div class="format-example">左に縦線が表示されます</div>
-            </div>
-
-            <div class="format-item">
-                <div class="format-name">引用（複数行）</div>
-                <div class="format-syntax tooltip" onclick="copyText('>>> 複数行の\n引用文です', this)">
-                    &gt;&gt;&gt; 複数行の引用
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">色付き（Python）</p>
+                    <button type="button" class="syntax" data-copy="```python&#10;def hello():&#10;    print(&quot;Hello!&quot;)&#10;```"><code><span class="m">```python</span>
+def hello():
+    print("Hello!")
+<span class="m">```</span></code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><pre><span class="k">def</span> <span class="f">hello</span>():
+    <span class="f">print</span>(<span class="s">"Hello!"</span>)</pre></div>
                 </div>
-                <div class="format-example">以降すべてが引用になります</div>
-            </div>
-        </div>
+            </section>
 
-        <!-- 特殊な表示 -->
-        <div class="card">
-            <h2 class="section-title">🎨 特殊な表示</h2>
-            
-            <div class="format-item">
-                <div class="format-name">ネタバレ</div>
-                <div class="format-syntax tooltip" onclick="copyText('||ネタバレ||', this)">
-                    ||ネタバレ||
-                    <span class="tooltiptext">クリックでコピー</span>
+            <!-- 引用 -->
+            <section class="sheet" id="quote">
+                <h2>引用</h2>
+                <div class="row-head"><span>装飾</span><span>書き方（押すとコピー）</span><span>Discordでの表示</span></div>
+
+                <div class="row">
+                    <p class="row-name">引用（1行）</p>
+                    <button type="button" class="syntax" data-copy="&gt; 引用文"><code><span class="m">&gt; </span>引用文</code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><blockquote>引用文</blockquote></div>
                 </div>
-                <div class="format-example">クリックするまで隠されます</div>
-            </div>
-
-            <div class="format-item">
-                <div class="format-name">見出し1</div>
-                <div class="format-syntax tooltip" onclick="copyText('# 大見出し', this)">
-                    # 大見出し
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">引用（複数行）</p>
+                    <button type="button" class="syntax" data-copy="&gt;&gt;&gt; 複数行の&#10;引用文です"><code><span class="m">&gt;&gt;&gt; </span>複数行の
+引用文です</code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><blockquote>複数行の<br>引用文です</blockquote></div>
                 </div>
-                <div class="format-example">一番大きな見出し</div>
-            </div>
+            </section>
 
-            <div class="format-item">
-                <div class="format-name">見出し2</div>
-                <div class="format-syntax tooltip" onclick="copyText('## 中見出し', this)">
-                    ## 中見出し
-                    <span class="tooltiptext">クリックでコピー</span>
+            <!-- 見出しとリスト -->
+            <section class="sheet" id="heading">
+                <h2>見出しとリスト</h2>
+                <div class="row-head"><span>装飾</span><span>書き方（押すとコピー）</span><span>Discordでの表示</span></div>
+
+                <div class="row">
+                    <p class="row-name">見出し1</p>
+                    <button type="button" class="syntax" data-copy="# 大見出し"><code><span class="m"># </span>大見出し</code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><div class="d-h1">大見出し</div></div>
                 </div>
-                <div class="format-example">中くらいの見出し</div>
-            </div>
-
-            <div class="format-item">
-                <div class="format-name">見出し3</div>
-                <div class="format-syntax tooltip" onclick="copyText('### 小見出し', this)">
-                    ### 小見出し
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">見出し2</p>
+                    <button type="button" class="syntax" data-copy="## 中見出し"><code><span class="m">## </span>中見出し</code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><div class="d-h2">中見出し</div></div>
                 </div>
-                <div class="format-example">小さな見出し</div>
-            </div>
-
-            <div class="format-item">
-                <div class="format-name">リスト</div>
-                <div class="format-syntax tooltip" onclick="copyText('- 項目1\n- 項目2', this)">
-                    - 項目1<br>- 項目2
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">見出し3</p>
+                    <button type="button" class="syntax" data-copy="### 小見出し"><code><span class="m">### </span>小見出し</code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><div class="d-h3">小見出し</div></div>
                 </div>
-                <div class="format-example">箇条書きリスト</div>
-            </div>
-
-            <div class="format-item">
-                <div class="format-name">番号付きリスト</div>
-                <div class="format-syntax tooltip" onclick="copyText('1. 項目1\n2. 項目2', this)">
-                    1. 項目1<br>2. 項目2
-                    <span class="tooltiptext">クリックでコピー</span>
+                <div class="row">
+                    <p class="row-name">リスト</p>
+                    <button type="button" class="syntax" data-copy="- 項目1&#10;- 項目2"><code><span class="m">- </span>項目1
+<span class="m">- </span>項目2</code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><ul><li>項目1</li><li>項目2</li></ul></div>
                 </div>
-                <div class="format-example">番号付きリスト</div>
-            </div>
-        </div>
+                <div class="row">
+                    <p class="row-name">番号付きリスト</p>
+                    <button type="button" class="syntax" data-copy="1. 項目1&#10;2. 項目2"><code><span class="m">1. </span>項目1
+<span class="m">2. </span>項目2</code><span class="syntax-copy">コピー</span></button>
+                    <div class="render"><ol><li>項目1</li><li>項目2</li></ol></div>
+                </div>
+            </section>
 
-        <!-- 便利なTips -->
-        <div class="card tips">
-            <div class="tips-title">💡 便利なTips</div>
-            <ul>
-                <li>記号を表示したい場合は、前に <code>\</code> を付けます（例：<code>\*</code> で * が表示されます）</li>
-                <li>複数の装飾を組み合わせることができます（例：<code>***__太字斜体下線__***</code>）</li>
-                <li>モバイルアプリでは一部の装飾が表示されない場合があります</li>
-                <li>コードブロックの言語指定は、js, python, css, html, java, c, cpp などが使えます</li>
-                <li>見出しは行の先頭に # を付ける必要があります</li>
-            </ul>
-        </div>
+            <!-- 便利なTips -->
+            <section class="sheet" id="tips">
+                <h2>知っておくと便利</h2>
+                <ul class="tips">
+                    <li>記号を表示したい場合は、前に <code>\</code> を付けます（例：<code>\*</code> で * が表示されます）</li>
+                    <li>複数の装飾を組み合わせることができます（例：<code>***__太字斜体下線__***</code>）</li>
+                    <li>モバイルアプリでは一部の装飾が表示されない場合があります</li>
+                    <li>コードブロックの言語指定は、js, python, css, html, java, c, cpp などが使えます</li>
+                    <li>見出しは行の先頭に # と半角スペースを付ける必要があります</li>
+                </ul>
+            </section>
+
+            <p class="foot">Discordの公式サイトではありません。</p>
+        </main>
     </div>
 
     <script>
-        let lastFormattedText = '';
+        const input = document.getElementById('userInput');
+        const preview = document.getElementById('preview');
+        const outputText = document.getElementById('outputText');
+        const copyBtn = document.getElementById('copyBtn');
+        const statusEl = document.getElementById('status');
+        const chips = Array.from(document.querySelectorAll('.chip'));
+        let current = chips[0];
 
-        function applyFormat(prefix, suffix) {
-            const input = document.getElementById('userInput');
+        // 文字を要素で包む。外側から順に指定する
+        function wrap(tags, text, className) {
+            const inner = document.createElement(tags[tags.length - 1]);
+            if (className) inner.className = className;
+            inner.textContent = text;
+            return tags.slice(0, -1).reduceRight((child, tag) => {
+                const parent = document.createElement(tag);
+                parent.appendChild(child);
+                return parent;
+            }, inner);
+        }
+
+        function spoilerButton(text) {
+            const button = wrap(['button'], text, 'spoiler');
+            button.type = 'button';
+            button.setAttribute('aria-expanded', 'false');
+            return button;
+        }
+
+        // ボタンが作る12種類だけを描画する
+        const renderers = {
+            bold: text => wrap(['strong'], text),
+            italic: text => wrap(['em'], text),
+            underline: text => wrap(['u'], text),
+            strike: text => wrap(['s'], text),
+            boldItalic: text => wrap(['strong', 'em'], text),
+            boldUnderline: text => wrap(['u', 'strong'], text),
+            code: text => wrap(['code'], text),
+            spoiler: spoilerButton,
+            quote: text => wrap(['blockquote'], text),
+            h1: text => wrap(['div'], text, 'd-h1'),
+            h2: text => wrap(['div'], text, 'd-h2'),
+            h3: text => wrap(['div'], text, 'd-h3')
+        };
+
+        function formattedText() {
             const text = input.value.trim();
-            
+            return text ? current.dataset.prefix + text + current.dataset.suffix : '';
+        }
+
+        function markSpan(text) {
+            const span = document.createElement('span');
+            span.className = 'm';
+            span.textContent = text;
+            return span;
+        }
+
+        function update() {
+            const text = input.value.trim();
+            preview.replaceChildren();
+            outputText.replaceChildren();
+            copyBtn.disabled = !text;
+            statusEl.textContent = '';
+
             if (!text) {
-                alert('装飾したいテキストを入力してください');
-                input.focus();
+                const empty = wrap(['span'], '文字を入力すると、ここに表示されます', 'message-empty');
+                preview.appendChild(empty);
                 return;
             }
 
-            const formattedText = prefix + text + suffix;
-            lastFormattedText = formattedText;
-            
-            // プレビューエリアを表示
-            const previewArea = document.getElementById('previewArea');
-            const preview = document.getElementById('preview');
-            
-            preview.textContent = formattedText;
-            previewArea.style.display = 'block';
-            
-            // プレビューエリアまでスムーズスクロール
-            previewArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            preview.appendChild(renderers[current.dataset.format](text));
+            outputText.append(markSpan(current.dataset.prefix), text, markSpan(current.dataset.suffix));
         }
 
-        function copyPreview(event) {
-            if (!lastFormattedText) return;
-            
-            const btn = event.target;
-            const originalText = btn.textContent;
-            
-            navigator.clipboard.writeText(lastFormattedText).then(() => {
-                btn.textContent = '✅ コピーしました！';
-                btn.style.background = '#43B581';
-                
+        function selectChip(chip) {
+            current = chip;
+            chips.forEach(item => item.setAttribute('aria-pressed', String(item === chip)));
+            update();
+        }
+
+        function copyPreview() {
+            const text = formattedText();
+            if (!text) return;
+
+            navigator.clipboard.writeText(text).then(() => {
+                copyBtn.textContent = 'コピーしました';
                 setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.background = '#5865F2';
+                    copyBtn.textContent = 'コピーする';
                 }, 2000);
             }).catch(err => {
                 console.error('コピーに失敗しました:', err);
-                alert('コピーに失敗しました: ' + err.message);
+                statusEl.textContent = 'コピーできませんでした。上の文章を選択してコピーしてください。';
             });
         }
 
-        // Enterキーでも装飾を適用できるようにする
-        document.addEventListener('DOMContentLoaded', function() {
-            const input = document.getElementById('userInput');
-            if (input) {
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        // デフォルトで太字を適用
-                        applyFormat('**', '**');
-                    }
-                });
+        function copyText(button) {
+            const label = button.querySelector('.syntax-copy');
+
+            navigator.clipboard.writeText(button.dataset.copy).then(() => {
+                label.textContent = 'コピーしました';
+                button.classList.add('is-copied');
+
+                setTimeout(() => {
+                    label.textContent = 'コピー';
+                    button.classList.remove('is-copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('コピーに失敗しました:', err);
+                label.textContent = 'コピーできませんでした';
+            });
+        }
+
+        input.addEventListener('input', update);
+        input.addEventListener('focus', () => input.select());
+
+        // Enterでコピー（日本語の変換確定のEnterは除く）
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229) {
+                copyPreview();
             }
         });
 
-        function copyText(text, element) {
-            // クリップボードにコピー
-            navigator.clipboard.writeText(text).then(() => {
-                // ツールチップを表示
-                const tooltip = element.querySelector('.tooltiptext');
-                const originalText = tooltip.textContent;
-                tooltip.textContent = 'コピーしました！';
-                tooltip.classList.add('show');
-                
-                // 2秒後に元に戻す
-                setTimeout(() => {
-                    tooltip.textContent = originalText;
-                    tooltip.classList.remove('show');
-                }, 2000);
-            }).catch(err => {
-                console.error('コピーに失敗しました:', err);
-            });
-        }
+        copyBtn.addEventListener('click', copyPreview);
+        chips.forEach(chip => chip.addEventListener('click', () => selectChip(chip)));
 
-        // ホバー時のツールチップ表示
-        document.querySelectorAll('.tooltip').forEach(element => {
-            element.addEventListener('mouseenter', function() {
-                const tooltip = this.querySelector('.tooltiptext');
-                if (tooltip && !tooltip.classList.contains('show')) {
-                    tooltip.style.visibility = 'visible';
-                    tooltip.style.opacity = '0.9';
-                }
-            });
+        document.addEventListener('click', e => {
+            const syntax = e.target.closest('.syntax');
+            if (syntax) copyText(syntax);
 
-            element.addEventListener('mouseleave', function() {
-                const tooltip = this.querySelector('.tooltiptext');
-                if (tooltip && !tooltip.classList.contains('show')) {
-                    tooltip.style.visibility = 'hidden';
-                    tooltip.style.opacity = '0';
-                }
-            });
+            const spoiler = e.target.closest('.spoiler');
+            if (spoiler) spoiler.setAttribute('aria-expanded', 'true');
         });
+
+        update();
+
+        // 見出しの「はさむ」を記号で閉じる
+        const clap = document.getElementById('clap');
+        const closeClap = () => clap.classList.add('is-closed');
+        const fontWait = Promise.race([
+            document.fonts.ready,
+            new Promise(resolve => setTimeout(resolve, 1200))
+        ]);
+        fontWait.then(() => setTimeout(closeClap, 350));
+
+        // いま見ている節を目次で示す
+        const sideLinks = Array.from(document.querySelectorAll('.side a'));
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                sideLinks.forEach(link => {
+                    link.classList.toggle('is-current', link.hash === '#' + entry.target.id);
+                });
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        document.querySelectorAll('.sheet').forEach(sheet => observer.observe(sheet));
     </script>
 </body>
 </html>
